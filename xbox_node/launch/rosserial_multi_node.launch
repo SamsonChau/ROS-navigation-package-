@@ -1,0 +1,16 @@
+<launch>
+	<node name="stm32" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" value = "/dev/ttyACM0"/>
+		<param name="baud" value="57600"/>
+	</node>
+	<node name="arduino" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" value="/dev/ttyUSB0"/>
+		<param name="baud" value="57600"/>
+	</node>
+	<node name="joy" pkg="joy" type="joy_node">
+		<param name="dev" type="string" value="/dev/input/js0"/>
+		<param name= "deadzone" value = "0"/>
+	</node>
+	<node name="xbox_node" pkg="xbox_node" type="xbox_node">
+	</node>
+</launch>

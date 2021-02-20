@@ -1,0 +1,122 @@
+NON carkin Source:
+ source /opt/ros/meodic/setup.bash
+******************************************************************************************************
+
+Create carkin wrkspace:
+$ mkdir -p ~/catkin_ws/src
+$ cd ~/catkin_ws/
+$ catkin_make
+
+new setup.*sh file: 
+$ source devel/setup.bash
+
+To make sure your workspace is properly overlayed by the setup script, make sure ROS_PACKAGE_PATH environment variable includes the directory you're in. 
+$ echo $ROS_PACKAGE_PATH /home/youruser/catkin_ws/src:/opt/ros/kinetic/share
+**********************************************************************************************************
+Install Package:
+$ sudo apt-get install {package}
+Denpendencies:
+$ sudo rosdep init 
+$ rosdep update 
+
+Find Package:
+rospack find {package name}
+
+Double tab == find the avalible command 
+
+rosls is part of the rosbash suite. It allows you to ls directly in a package by name rather than by absolute path. 
+$ rosls {package Name}
+
+Building the ROS Package:
+Source the setup 
+$ source /opt/ros/kinetic/setup.bash   
+
+*****************************************************************************************************************
+ROS RUNNING /Opperation
+
+RUN the core:
+$ roscore
+
+Go to carkin workspace:
+$ cd ~/catkin_ws
+
+Information of the node:
+$ rosnode info /rosout
+
+Run the Node:
+$ rosrun turtlesim turtlesim_node
+$ roslaucnch launch filename
+*************************************************************************************************************
+IMU 
+source the file 
+$ source /opt/ros/melodic/setup.bash
+
+run the core
+$ roscore
+
+New terminal run 
+$ rosrun openzen_sensor openzen_sensor_node _sensor _baudrate:=921600
+
+New terminal run topic:
+$ rostopic echo /imu/data
+
+***************************************************************************************************************
+Build the Node 
+cmake 
+
+cd catkin_ws/src/openzenros
+
+catkin_build 
+
+vim CMakeLists.txt
+
+In CMakeLists:
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  sensor_msgs
+)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+add_executable(openzen_sensor_node
+  src/OpenZenNode.cpp
+)
+
+add_dependencies(openzen_sensor_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(openzen_sensor_node
+  ${catkin_LIBRARIES}
+  ${OPENZEN_TARGET_NAME}
+)
+
+:wq
+
+vim package.xml 
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_srvs</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <run_depend>topic_tools</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>std_srvs</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>tf</run_depend>
+:wq
+
+ ************************************************************************************************************
+ROS to arduino
+rosrun rosserial_python serial_node.py _port:=/dev/ttyACM2 _baud:=38400 (max)
+
+check usb port
+demsg 
+***********************************************************************************************************
+tf  
+rosrun tf static_transform_publisher 0 0 0 0 0 0 map base_link 50
+
+
+
+
+

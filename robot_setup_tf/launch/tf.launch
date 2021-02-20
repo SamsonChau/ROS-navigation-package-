@@ -1,0 +1,16 @@
+<launch>
+	<!-- Run the stm32 node -->
+	<node name="stm32" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" value = "/dev/ttyACM0"/>
+		<param name="baud" value="57600"/>
+	</node>
+	<!-- Run the odom node -->
+	<node name = "positioning_system_v1" pkg = "positioning_system_v1" type = "positioning_system_v1">
+	</node>	
+	<!-- Run the tf node -->
+	<node name = "robot_setup_tf_node" pkg = "robot_setup_tf" type = "robot_setup_tf_node">
+	</node>	
+	<arg name="map_file" default="$(find maps)/Site2.yaml"/>
+	<!-- Run the map server -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+</launch>
